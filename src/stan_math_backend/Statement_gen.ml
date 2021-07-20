@@ -70,7 +70,7 @@ let pp_assign_sized ppf (decl_id, st, adtype) =
   let pp_assign ppf (decl_id, st, adtype) =
     pf ppf "@[<hov 2>%s = %a;@]@," decl_id pp_initialize (st, adtype)
   in
-  pf ppf "@[%a%a@]@," pp_assign (decl_id, st, adtype) pp_filler
+  pf ppf "@[<v>%a%a@]" pp_assign (decl_id, st, adtype) pp_filler
     (decl_id, st, init_nan, true)
 
 let%expect_test "set size mat array" =

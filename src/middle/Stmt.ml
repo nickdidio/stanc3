@@ -18,6 +18,7 @@ module Fixed = struct
       | IfElse of 'a * 'b * 'b option
       | While of 'a * 'b
       | For of {loopvar: string; lower: 'a; upper: 'a; body: 'b}
+      | ForComplex of {loopvar: string; body: 'a}
       | Profile of string * 'b list
       | Block of 'b list
       | SList of 'b list
@@ -57,6 +58,9 @@ module Fixed = struct
       | For {loopvar; lower; upper; body} ->
           Fmt.pf ppf {|%a(%s in %a:%a) %a|} pp_builtin_syntax "for" loopvar
             pp_e lower pp_e upper pp_s body
+      | ForComplex {loopvar; body} ->
+        Fmt.pf ppf {|%a(const string &%s {".real()"}) %a|} pp_builtin_syntax "for" loopvar
+        pp_s body
       | Profile (_, stmts) ->
           Fmt.pf ppf {|{@;<1 2>@[<v>%a@]@;}|}
             Fmt.(list pp_s ~sep:Fmt.cut)

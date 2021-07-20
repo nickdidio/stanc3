@@ -15,6 +15,7 @@ module Fixed : sig
       | IfElse of 'a * 'b * 'b option
       | While of 'a * 'b
       | For of {loopvar: string; lower: 'a; upper: 'a; body: 'b}
+      | ForComplex of {loopvar: string; body: 'a}
       | Profile of string * 'b list
       | Block of 'b list
       | SList of 'b list

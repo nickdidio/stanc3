@@ -408,10 +408,27 @@ let rec check_decl var decl_type' decl_id decl_trans smeta adlevel =
   | _ -> (
     match check_constraint_to_string decl_trans Check with
     | Some fn ->
+        let rec check_complex_id param=
+          
+        match param with 
+          | "real" -> check_complex_id "imag"
+          | _ -> []
+        in
         let check_id id =
-          let id_str = Expr.Helpers.str (Fmt.strf "%a" Expr.Typed.pp id) in
-          let args = extract_transform_args id decl_trans in
-          Stmt.Helpers.internal_nrfunapp (FnCheck fn) (id_str :: id :: args)
+          match decl_type with 
+          | SComplex -> 
+            let id = Expr.
+              { Fixed.pattern= Var (decl_id^".real()")
+              ; meta= id.Fixed.meta } 
+            in
+            let id_str = Expr.Helpers.str (Fmt.strf "%a" Expr.Typed.pp id) in
+            let args = extract_transform_args id decl_trans in
+            Stmt.Helpers.internal_nrfunapp (FnCheck fn) (id_str :: id :: args)
+            smeta 
+          | _ -> 
+            let id_str = Expr.Helpers.str (Fmt.strf "%a" Expr.Typed.pp id) in
+            let args = extract_transform_args id decl_trans in
+            Stmt.Helpers.internal_nrfunapp (FnCheck fn) (id_str :: id :: args)
             smeta
         in
         [(constraint_forl decl_trans) decl_type check_id var smeta]
